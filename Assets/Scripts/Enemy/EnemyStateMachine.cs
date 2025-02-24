@@ -2,11 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class EnemyStateMachine
+public abstract class EnemyStateMachine : ScriptableObject
 {
     protected EnemyController enemy;
 
-    public EnemyStateMachine(EnemyController enemy)
+    public void Initialize(EnemyController enemy)
     {
         this.enemy = enemy;
     }

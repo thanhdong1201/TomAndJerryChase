@@ -23,7 +23,7 @@ public class PlayerCollider : MonoBehaviour
     [SerializeField] private VoidEventChannelSO applyVintageEvent;
 
     private PlayerController playerController;
-    private PlayerPowerUpHandler playerPowerUpHandler;
+    private PlayerInventory playerInventory;
 
     private float lastTriggerTime = 0f;
     private const float triggerCooldown = 0.01f;
@@ -31,7 +31,7 @@ public class PlayerCollider : MonoBehaviour
     private void Start()
     {
         playerController = GetComponent<PlayerController>();
-        playerPowerUpHandler = GetComponent<PlayerPowerUpHandler>();
+        playerInventory = GetComponent<PlayerInventory>();
     }
     private void Update()
     {
@@ -76,7 +76,7 @@ public class PlayerCollider : MonoBehaviour
         }
         else
         {
-            playerPowerUpHandler.AddPowerUp(collectible.itemType);
+            playerInventory.AddPowerUp(collectible.itemType);
         }
 
     }

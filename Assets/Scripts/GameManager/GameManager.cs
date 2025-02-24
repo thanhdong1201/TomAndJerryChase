@@ -25,9 +25,9 @@ public class GameManager : MonoBehaviour
 
     [Header("Music & Sound")]
     [SerializeField] private AudioCueSO audioCueSO;
-    [SerializeField] private AudioClip chaseMusic;
     [SerializeField] private AudioClip gameOverMusic;
 
+    private Coroutine restartCoroutine;
     private GameObject player;
 
     private void Awake()
@@ -51,9 +51,6 @@ public class GameManager : MonoBehaviour
     {
         switch (gameState)
         {
-            case GameState.None:
-
-                break;
             case GameState.Pause:
                 PauseGame();
                 break;
@@ -87,16 +84,13 @@ public class GameManager : MonoBehaviour
     {
         cinemachineBrain.m_DefaultBlend = new CinemachineBlendDefinition(CinemachineBlendDefinition.Style.EaseInOut, 2f);
         chaseCamera.SetActive(true);
-        audioCueSO.PlayMusic(chaseMusic);
     }
     private void StopChase()
     {
         chaseCamera.SetActive(false);
-        audioCueSO.FadeOutMusic();
     }
     private void GameOver()
     {
-        audioCueSO.FadeOutMusic();
         audioCueSO.PlaySFX(gameOverMusic);
     }
     private void PauseGame()
@@ -115,7 +109,8 @@ public class GameManager : MonoBehaviour
     }
     private void RestartGame()
     {
-        StartCoroutine(RestartCoroutine());
+        if (restartCoroutine != null) StopCoroutine(restartCoroutine);
+        restartCoroutine = StartCoroutine(RestartCoroutine());
     }
     private IEnumerator RestartCoroutine()
     {

@@ -3,33 +3,30 @@
 public class EnemyController : MonoBehaviour
 {
     public GameStateSO gameStateSO;
-
-    [Header("Movement Settings")]
-    public float speedMultiplier = 1.75f;
-    public float maxSpeed = 20f;
-    public float followDistance = 6f;
-    public float attackDistance = 3.5f;
-    public float spawnDistance = 7f;
-
-    [Header("Components")]
     public Animator animator;
-    public GameObject character;
+
+    [Header("State Machine")]
+    public IdleState idleState;
+    public ChaseState chaseState;
+    public AttackState attackState;
+    public LostState lostState;
+    public PlayerMovement playerMovement { get; private set; }
+    public Transform player { get; private set; }
+
+    [HideInInspector] public float followDistance;
+    [HideInInspector] public float currentSpeed;
 
     private EnemyStateMachine currentState;
-    private PlayerMovement playerMovement;
-    private Transform player;
     private GameObject projectilePrefab;
 
-    [HideInInspector] public float currentSpeed;
-    public float defaultFollowDistance { get; private set; }
+    private float speedMultiplier = 1.75f;
+    private float maxSpeed = 20f;
 
     private void Start()
     {
         player = GameObject.FindWithTag("Player").transform;
         playerMovement = player?.GetComponent<PlayerMovement>();
-        defaultFollowDistance = followDistance;
-
-        SetState(new IdleState(this));
+        SetState(idleState);
     }
     private void OnEnable()
     {
@@ -61,6 +58,7 @@ public class EnemyController : MonoBehaviour
     {
         currentState?.Exit();
         currentState = newState;
+        currentState.Initialize(this);
         currentState?.Enter();
     }
     public void MoveToTarget()
@@ -69,45 +67,21 @@ public class EnemyController : MonoBehaviour
         Vector3 targetPosition = new Vector3(player.position.x, 0f, player.position.z - followDistance);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
     }
-    public void SetUpProjectile(GameObject projectilePrefab)
-    {
-        this.projectilePrefab = projectilePrefab;
-    }
-    public void MissleAttack()
+    public void RangeAttack(GameObject projectilePrefab)
     {
         GameObject missle = Instantiate(projectilePrefab, transform);
         ProjectileController projectile = missle.GetComponent<ProjectileController>();
         Vector3 playerVelocity = player.GetComponent<CharacterController>().velocity;
         projectile.LauchToTarget(player, playerVelocity);
     }
-    public void StartChase()
-    {
-        currentSpeed = playerMovement.getSpeed;
-        followDistance = defaultFollowDistance;
-        transform.position = new Vector3(player.position.x, 0f, player.position.z - spawnDistance);
-
-
-        if (!character.activeSelf)
-        {
-            character.SetActive(true);
-        }
-    }
-    public void StopChase()
-    {
-        currentSpeed = 0f;
-        character.SetActive(false);
-    }
     private void StartGame()
     {
-        SetState(new ChaseState(this));
+        SetState(chaseState);
         currentSpeed = playerMovement.getSpeed;
-        followDistance = defaultFollowDistance;
     }
     private void RestartGame()
     {
-        SetState(new IdleState(this));
-        character.SetActive(false); 
+        SetState(idleState);
         transform.position = new Vector3(0, 0, -30);
-        character.SetActive(true);
     }
 }

@@ -13,7 +13,7 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        defaultMusicVolume = musicSource.volume; // Lưu âm lượng gốc
+        defaultMusicVolume = musicSource.volume;
     }
 
     private void OnEnable()
@@ -37,7 +37,6 @@ public class AudioManager : MonoBehaviour
 
     private void HandlePlayMusic(AudioClip clip)
     {
-        // If its fading out, stop the coroutine
         if (fadeOutCoroutine != null)
         {
             StopCoroutine(fadeOutCoroutine);

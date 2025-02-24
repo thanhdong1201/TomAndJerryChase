@@ -79,15 +79,15 @@ public class UIManager : MonoBehaviour
     }
     private void HandlePlayerState(PlayerState playerState)
     {
-        currentPlayerStateText.SetText("Player: " + gameStateSO.CurrentPlayerState.ToString());
+        currentPlayerStateText.SetText("Player: " + playerState.ToString());
     }
     private void HandleEnemyState(EnemyState enemyState)
     {
-        currentEnemyStateText.SetText("Enemy: " + gameStateSO.CurrentEnemyState.ToString());
+        currentEnemyStateText.SetText("Enemy: " + enemyState.ToString());
     }
     private void HandleGameStateUI(GameState state)
     {
-        currentStateText.SetText("State: " + gameStateSO.CurrentGameState.ToString());
+        currentStateText.SetText("State: " + state.ToString());
 
         if (state == GameState.GameOver) GameOver();
         else if (state == GameState.Pause) pauseMenu.gameObject.SetActive(true);

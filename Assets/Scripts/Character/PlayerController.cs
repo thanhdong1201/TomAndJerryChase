@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Rigidbody rb;
 
-    private bool isGameStarted = false;
+    private bool isPaused = false;
 
     private void Start()
     {
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (!isGameStarted) return;
+        if (!isPaused) return;
 
         playerMovement.CheckGround();
         playerMovement.UpdateVerticalVelocity();
@@ -58,24 +58,24 @@ public class PlayerController : MonoBehaviour
                 RestartGame();
                 break;
             case GameState.GameOver:
-                isGameStarted = false;
+                isPaused = true;
                 break;
             case GameState.Pause:
-                isGameStarted = false;
+                isPaused = true;
                 break;
             case GameState.Resume:
-                isGameStarted = true;
+                isPaused = false;
                 break;
         }
     }
     private void Idle()
     {
         animator.SetBool("Run", false);
-        isGameStarted = false;
+        isPaused = true;
     }
     private void StartGame()
     {
-        isGameStarted = true;
+        isPaused = false;
         animator.SetBool("Run", true);
         gameStateSO.SetPlayerState(PlayerState.Running);
     }
@@ -88,7 +88,7 @@ public class PlayerController : MonoBehaviour
         }
 
         animator.SetTrigger("Restart");
-        playerMovement.ResetPosition();
+        playerMovement.ResetPlayer();
         Idle();
     }
     public void GetHit()
@@ -103,7 +103,7 @@ public class PlayerController : MonoBehaviour
     {
         gameStateSO.SetGameState(GameState.GameOver);
         gameStateSO.SetPlayerState(PlayerState.Dead);
-        isGameStarted = false;
+        isPaused = true;
         animator.SetTrigger("Fall");
         characterController.enabled = false;
 

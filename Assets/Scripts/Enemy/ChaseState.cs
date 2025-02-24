@@ -2,21 +2,28 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Enemy States/Chase")]
 public class ChaseState : EnemyStateMachine
 {
-    public ChaseState(EnemyController enemy) : base(enemy) { }
-
+    [SerializeField] private AudioCueSO audioCueSO;
+    [SerializeField] private AudioClip chaseMusic;
+    [SerializeField] private float defaultEscapeTimer = 10f;
+    [SerializeField] private float followDistance = 6;
+    [SerializeField] private float spawnDistance = 8;
     private float escapeTimer;
-    private float defaultEscapeTimer = 10f;
 
     public override void Enter()
     {
+        enemy.gameStateSO.SetEnemyState(EnemyState.Chasing);
         enemy.gameStateSO.OnPlayerStateChanged += HandlePlayerStateChanged;
         enemy.gameStateSO.OnObstacleCollision += HandleObstacleCollision;
-        enemy.gameStateSO.SetEnemyState(EnemyState.Chasing);
+
         enemy.animator.SetBool("Chase", true);
-        enemy.StartChase();
+        enemy.followDistance = followDistance;
+        enemy.transform.position = new Vector3(enemy.player.position.x, 0f, enemy.player.position.z - spawnDistance);
+
         escapeTimer = defaultEscapeTimer;
+        audioCueSO.PlayMusic(chaseMusic);
     }
 
     public override void Update()
@@ -26,7 +33,7 @@ public class ChaseState : EnemyStateMachine
         escapeTimer -= Time.deltaTime;
         if (escapeTimer <= 0)
         {
-            enemy.SetState(new LostState(enemy));
+            enemy.SetState(enemy.lostState);
         }
     }
 
@@ -37,11 +44,11 @@ public class ChaseState : EnemyStateMachine
     }
     private void HandleObstacleCollision()
     {
-        enemy.SetState(new AttackState(enemy)); // Lần thứ nhất gọi → Tấn công
+        enemy.SetState(enemy.attackState); 
     }
     private void HandlePlayerStateChanged(PlayerState state)
     {
-        if (state == PlayerState.Dead) enemy.SetState(new IdleState(enemy));
-        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(new LostState(enemy));
+        if (state == PlayerState.Dead) enemy.SetState(enemy.idleState);
+        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(enemy.lostState);
     }
 }

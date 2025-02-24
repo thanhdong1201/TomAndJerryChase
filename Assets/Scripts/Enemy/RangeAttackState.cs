@@ -2,19 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MissleAttackState : EnemyStateMachine
+[CreateAssetMenu(menuName = "Enemy States/RangeAttack")]
+public class RangeAttackState : EnemyStateMachine
 {
-    public MissleAttackState(EnemyController enemy) : base(enemy) { }
-
-    private float escapeTimer = 25f;
+    [SerializeField] private GameObject projectilePrefab;
+    [SerializeField] private float defaultEscapeTimer = 25f;
+    [SerializeField] private float defaultCoolDownAttack = 2f;
     private float coolDownAttack;
-    private float defaultCoolDownAttack = 2f;
+    private float escapeTimer;
 
     public override void Enter()
     {
         enemy.gameStateSO.SetEnemyState(EnemyState.Lost);
         enemy.gameStateSO.OnPlayerStateChanged += HandlePlayerStateChanged;
+
         coolDownAttack = defaultCoolDownAttack;
+        escapeTimer = defaultEscapeTimer;
     }
 
     public override void Update()
@@ -23,13 +26,13 @@ public class MissleAttackState : EnemyStateMachine
         if ((coolDownAttack <= 0))
         {
             coolDownAttack = defaultCoolDownAttack;
-            enemy.MissleAttack();
+            enemy.RangeAttack(projectilePrefab);
         }
 
         escapeTimer -= Time.deltaTime;
         if (escapeTimer <= 0)
         {
-            enemy.SetState(new LostState(enemy));
+            enemy.SetState(enemy.lostState);
         }
     }
     public override void Exit()
@@ -38,6 +41,6 @@ public class MissleAttackState : EnemyStateMachine
     }
     private void HandlePlayerStateChanged(PlayerState state)
     {
-        if (state == PlayerState.Dead) enemy.SetState(new IdleState(enemy));
+        if (state == PlayerState.Dead) enemy.SetState(enemy.idleState);
     }
 }

@@ -203,5 +203,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ad65ca212911c4f82270f638ac8d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemType: 4
+  itemType: 3
   returnToPoolEvent: {fileID: 11400000, guid: 1ce2689f146e42d4ebc5f98c0c1b1271, type: 2}

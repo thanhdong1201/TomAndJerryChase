@@ -19,6 +19,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 targetPosition;
     private int currentLane = 0;
+    private float defaultSpeed;
     private float verticalVelocity = 0f;
     private float fallMultiplier = 2.5f;
     private float lowJumpMultiplier = 2f;
@@ -31,6 +32,7 @@ public class PlayerMovement : MonoBehaviour
     {
         characterController = GetComponent<CharacterController>();
         targetPosition = transform.position;
+        defaultSpeed = targetSpeed;
     }
 
     public void CheckGround()
@@ -146,8 +148,9 @@ public class PlayerMovement : MonoBehaviour
         yield return new WaitForSeconds(duration);
         targetSpeed = originalSpeed;
     }
-    public void ResetPosition()
+    public void ResetPlayer()
     {
+        targetSpeed = defaultSpeed;
         characterController.enabled = false;
         currentLane = 0;
         transform.position = new Vector3(0, 0, -15);

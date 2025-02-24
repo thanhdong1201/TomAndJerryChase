@@ -1,24 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
 
+[CreateAssetMenu(menuName = "Enemy States/Lost")]
 public class LostState : EnemyStateMachine
 {
-    public LostState(EnemyController enemy) : base(enemy) { }
-
-    private float slowDownDuration = 3f;
+    [SerializeField] private float slowDownDuration = 3f;
     private float elapsedTime;
     private float initialSpeed;
 
     public override void Enter()
     {
         enemy.gameStateSO.SetEnemyState(EnemyState.Lost);
-        initialSpeed = enemy.currentSpeed;
-        elapsedTime = 0f;
-
-        enemy.followDistance = enemy.defaultFollowDistance;
-
         enemy.gameStateSO.OnPlayerStateChanged += HandlePlayerStateChanged;
         enemy.gameStateSO.OnObstacleCollision += HandleObstacleCollision;
+
+        initialSpeed = enemy.currentSpeed;
+        elapsedTime = 0f;
     }
     public override void Update() 
     {
@@ -31,7 +28,7 @@ public class LostState : EnemyStateMachine
         }
         else
         {
-            enemy.StopChase();
+            enemy.SetState(enemy.lostState);
         }
     }
     public override void Exit()
@@ -41,11 +38,11 @@ public class LostState : EnemyStateMachine
     }
     private void HandleObstacleCollision()
     {
-        enemy.SetState(new ChaseState(enemy));
+        enemy.SetState(enemy.chaseState);
     }
     private void HandlePlayerStateChanged(PlayerState state)
     {
-        if (state == PlayerState.Dead) enemy.SetState(new IdleState(enemy));
-        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(new LostState(enemy));
+        if (state == PlayerState.Dead) enemy.SetState(enemy.idleState);
+        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(enemy.lostState);
     }
 }

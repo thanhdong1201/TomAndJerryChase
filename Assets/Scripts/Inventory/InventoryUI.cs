@@ -1,13 +1,12 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 using System.Collections.Generic;
 
-public class PowerUpUI : MonoBehaviour
+public class InventoryUI : MonoBehaviour
 {
     [SerializeField] private GameObject inventoryItemPrefab;
-    [SerializeField] private List<InventoryItem> inventoryItems;
 
     private Dictionary<PowerUpBase, InventoryItem> powerUpDictionary;
+    private List<InventoryItem> inventoryItems;
 
     private void Start()
     {

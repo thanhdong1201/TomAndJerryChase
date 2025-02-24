@@ -1,11 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
 
-public class PlayerPowerUpHandler : MonoBehaviour
+public class PlayerInventory : MonoBehaviour
 {
     [SerializeField] private GameStateSO gameStateSO;
     [SerializeField] private List<PowerUpBase> powerUpInventory = new List<PowerUpBase>();
-    [SerializeField] private PowerUpUI powerUpUI;
+    [SerializeField] private InventoryUI inventoryUI;
 
     private void OnEnable()
     {
@@ -17,7 +17,7 @@ public class PlayerPowerUpHandler : MonoBehaviour
     }
     private void HandleGameStateChange(GameState newState)
     {
-        if (newState == GameState.Restart) powerUpUI.Restart();
+        if (newState == GameState.Restart) inventoryUI.Restart();
     }
     public void AddPowerUp(ItemType type)
     {
@@ -25,7 +25,7 @@ public class PlayerPowerUpHandler : MonoBehaviour
         {
             if (powerUpBase.type == type)
             {
-                powerUpUI.AddItem(powerUpBase);
+                inventoryUI.AddItem(powerUpBase);
                 return;
             }
         }

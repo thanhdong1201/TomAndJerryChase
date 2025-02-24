@@ -1,32 +1,28 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
+[CreateAssetMenu(menuName = "Enemy States/Attack")]
 public class AttackState : EnemyStateMachine
 {
-    public AttackState(EnemyController enemy) : base(enemy) { }
-
-    private float escapeTimer;
-    private float defaultEscapeTimer = 10f;
-    private float transitionSpeed = 5f;
+    [SerializeField] private AudioCueSO audioCueSO;
+    [SerializeField] private float defaultEscapeTimer = 10f;
+    [SerializeField] private float defaultCoolDownAttack = 2.5f;
+    [SerializeField] private float attackDistance = 3.5f;
     private float coolDownAttack;
-    private float defaultCoolDownAttack = 2.5f; 
+    private float escapeTimer;
+
     public override void Enter()
     {
         enemy.gameStateSO.SetEnemyState(EnemyState.Attacking);
         enemy.gameStateSO.OnPlayerStateChanged += HandlePlayerStateChanged;
         enemy.gameStateSO.OnObstacleCollision += HandleObstacleCollision;
+
         escapeTimer = defaultEscapeTimer;
         coolDownAttack = 0f;
+        enemy.followDistance = attackDistance;
     }
 
     public override void Update()
     {
-        if (enemy.followDistance > enemy.attackDistance)
-        {
-            enemy.followDistance = Mathf.MoveTowards(enemy.followDistance, enemy.attackDistance, transitionSpeed * Time.deltaTime);
-        }
-
         enemy.MoveToTarget();
 
 
@@ -44,13 +40,14 @@ public class AttackState : EnemyStateMachine
         escapeTimer -= Time.deltaTime;
         if (escapeTimer <= 0)
         {
-            enemy.SetState(new LostState(enemy));
+            enemy.SetState(enemy.lostState);
         }
     }
     public override void Exit()
     {
         enemy.gameStateSO.OnPlayerStateChanged -= HandlePlayerStateChanged;
         enemy.gameStateSO.OnObstacleCollision -= HandleObstacleCollision;
+        audioCueSO.FadeOutMusic();
     }
     private void HandleObstacleCollision()
     {
@@ -58,7 +55,7 @@ public class AttackState : EnemyStateMachine
     }
     private void HandlePlayerStateChanged(PlayerState state)
     {
-        if (state == PlayerState.Dead) enemy.SetState(new IdleState(enemy));
-        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(new LostState(enemy));
+        if (state == PlayerState.Dead) enemy.SetState(enemy.idleState);
+        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(enemy.lostState);
     }
 }

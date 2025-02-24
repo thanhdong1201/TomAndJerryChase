@@ -5,6 +5,7 @@ using UnityEngine;
 public class TriggerBossPhase : MonoBehaviour
 {
     [SerializeField] private EnemyController enemyController;
+    [SerializeField] private RangeAttackState rangeAttackState;
     [SerializeField] private GameObject projectilePrefab;
     [Header("Broadcast from Events")]
     [SerializeField] private string warningText;
@@ -12,8 +13,7 @@ public class TriggerBossPhase : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        enemyController.SetUpProjectile(projectilePrefab);
-        enemyController.SetState(new MissleAttackState(enemyController));
+        enemyController.SetState(rangeAttackState);
         setWarningEvent.RaiseEvent(warningText);
     }
 }
