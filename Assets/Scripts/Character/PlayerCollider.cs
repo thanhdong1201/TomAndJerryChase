@@ -69,14 +69,14 @@ public class PlayerCollider : MonoBehaviour
     {
         collectEffect.Play();
         collectible.Collect();
-        if (collectible.type == Type.Cheese)
+        if (collectible.itemType == ItemType.Coin)
         {
             playerDataSO.AddCurrentCoin(1);
             audioCueSO.PlaySFX(collectClip);
         }
-        else if (collectible.type == Type.PowerUp)
+        else
         {
-            playerPowerUpHandler.AddPowerUp(collectible.powerUpType);
+            playerPowerUpHandler.AddPowerUp(collectible.itemType);
         }
 
     }

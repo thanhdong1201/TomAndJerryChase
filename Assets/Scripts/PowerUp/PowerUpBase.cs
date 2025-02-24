@@ -1,22 +1,16 @@
 ﻿using System.Collections;
 using UnityEngine;
-public enum PowerUpType
-{
-    None,
-    Invisibility,
-    SpeedBoost,
-    GainLife,
-    Shield, 
-    Magnet
-}
+
 
 public abstract class PowerUpBase : MonoBehaviour
 {
     [SerializeField] protected GameStateSO gameStateSO;
-    [SerializeField] protected GameObject effect;
-    public abstract PowerUpType type { get; }
-    public Sprite powerUpIcon;
+    [SerializeField] protected ParticleSystem particle;
+
+    public abstract ItemType type { get; }
+    public Sprite sprite;
     public float duration = 5f;
+
     protected GameObject player;
 
     private void Start()
@@ -25,36 +19,41 @@ public abstract class PowerUpBase : MonoBehaviour
     }
     public void Activate()
     {
-        effect.SetActive(true);
         ApplyEffect();
-        UpdatePlayerState(true);
-        player.GetComponent<PlayerPowerUpHandler>().StartCoroutine(DeactivateAfterDuration());
     }
+    protected virtual void ApplyEffect()
+    {
+        UpdatePlayerState();
+        particle.gameObject.SetActive(true);
+        particle.Play();
+        StartCoroutine(RemoveEffectAfterDuration());
+    }
+    protected virtual void RemoveEffect() 
+    {
+        particle.Stop();
+        particle.gameObject.SetActive(false);
+        gameStateSO.SetPlayerState(PlayerState.Running);
+    }      
 
-    protected abstract void ApplyEffect();
-    protected abstract void RemoveEffect();
-
-    private IEnumerator DeactivateAfterDuration()
+    private IEnumerator RemoveEffectAfterDuration()
     {
         yield return new WaitForSeconds(duration);
-        effect.SetActive(false);
         RemoveEffect();
-        gameStateSO.SetPlayerState(PlayerState.Running);
     }
-    private void UpdatePlayerState(bool isActive)
+    private void UpdatePlayerState()
     {
         switch (type)
         {
-            case PowerUpType.Invisibility:
+            case ItemType.Invisibility:
                 gameStateSO.SetPlayerState(PlayerState.Invisible);
                 break;
-            case PowerUpType.SpeedBoost:
+            case ItemType.SpeedBoost:
                 gameStateSO.SetPlayerState(PlayerState.SpeedBoost);
                 break;
-            case PowerUpType.Shield:
+            case ItemType.Shield:
                 gameStateSO.SetPlayerState(PlayerState.Shielded);
                 break;
-            case PowerUpType.Magnet:
+            case ItemType.Magnet:
                 gameStateSO.SetPlayerState(PlayerState.Magnet);
                 break;
         }

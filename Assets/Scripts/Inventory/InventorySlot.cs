@@ -1,8 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+//using System.Collections;
+//using System.Collections.Generic;
+//using UnityEngine;
 
-public class InventorySlot : MonoBehaviour
-{
-
-}
+//public class InventorySlot : MonoBehaviour
+//{
+//    public InventoryItem inventoryItem;
+//}

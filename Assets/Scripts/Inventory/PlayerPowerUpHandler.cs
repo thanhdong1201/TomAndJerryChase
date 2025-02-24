@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 public class PlayerPowerUpHandler : MonoBehaviour
 {
-    public GameStateSO gameStateSO;
+    [SerializeField] private GameStateSO gameStateSO;
     [SerializeField] private List<PowerUpBase> powerUpInventory = new List<PowerUpBase>();
     [SerializeField] private PowerUpUI powerUpUI;
 
@@ -19,7 +19,7 @@ public class PlayerPowerUpHandler : MonoBehaviour
     {
         if (newState == GameState.Restart) powerUpUI.Restart();
     }
-    public void AddPowerUp(PowerUpType type)
+    public void AddPowerUp(ItemType type)
     {
         foreach (PowerUpBase powerUpBase in powerUpInventory)
         {

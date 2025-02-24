@@ -2,16 +2,14 @@
 
 public class ShieldPowerUp : PowerUpBase
 {
-    [SerializeField] private GameObject shieldVisual;
-
-    public override PowerUpType type => PowerUpType.Shield;
+    public override ItemType type => ItemType.Shield;
     protected override void ApplyEffect()
     {
-        shieldVisual.SetActive(true);
+        base.ApplyEffect();
     }
 
     protected override void RemoveEffect()
     {
-        shieldVisual.SetActive(false);
+        base.RemoveEffect();
     }
 }

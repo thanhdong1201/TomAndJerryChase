@@ -1,7 +1,4 @@
-﻿using System.Numerics;
-using UnityEngine;
-using UnityEngine.Rendering.Universal;
-using UnityEngine.Rendering;
+﻿using UnityEngine;
 
 public class SpeedBoostPowerUp : PowerUpBase
 {
@@ -10,16 +7,18 @@ public class SpeedBoostPowerUp : PowerUpBase
     [Header("Broadcast from Events")]
     [SerializeField] private BoolEventChannelSO applyMotionBlurEventChannel;
 
-    public override PowerUpType type => PowerUpType.SpeedBoost;
+    public override ItemType type => ItemType.SpeedBoost;
 
     protected override void ApplyEffect()
     {
+        base.ApplyEffect();
         PlayerMovement playerMovement = player.GetComponent<PlayerMovement>();
-        playerMovement.ChangeSpeed(speedMultiplier,  duration);
+        playerMovement.ChangeSpeed(speedMultiplier, duration);
         applyMotionBlurEventChannel?.RaiseEvent(true);
     }
     protected override void RemoveEffect()
     {
+        base.RemoveEffect();
         applyMotionBlurEventChannel?.RaiseEvent(false);
     }
 }

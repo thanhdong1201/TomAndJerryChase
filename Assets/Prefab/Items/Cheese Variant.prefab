@@ -128,10 +128,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ad65ca212911c4f82270f638ac8d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 0
-  powerUpType: 0
-  coinEvent: {fileID: 11400000, guid: 9ba65b52a6d10d941940ca5800a93956, type: 2}
-  powerUpEvent: {fileID: 0}
+  itemType: 1
+  returnToPoolEvent: {fileID: 11400000, guid: 9ba65b52a6d10d941940ca5800a93956, type: 2}
 --- !u!65 &7017202570194315861
 BoxCollider:
   m_ObjectHideFlags: 0

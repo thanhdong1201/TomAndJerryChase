@@ -198,10 +198,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2ad65ca212911c4f82270f638ac8d5f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  type: 1
-  powerUpType: 2
-  coinEvent: {fileID: 0}
-  powerUpEvent: {fileID: 11400000, guid: 1ce2689f146e42d4ebc5f98c0c1b1271, type: 2}
+  itemType: 3
+  returnToPoolEvent: {fileID: 11400000, guid: 1ce2689f146e42d4ebc5f98c0c1b1271, type: 2}
 --- !u!4 &6460265352791923260 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 3aa4cf03b84df1b4fb3a113e950c3c00, type: 3}

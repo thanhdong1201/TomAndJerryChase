@@ -1,39 +1,47 @@
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class InventoryItem : MonoBehaviour
 {
-    [SerializeField] private int count = 0;
-    [SerializeField] private Image image;
-    [SerializeField] private TextMeshProUGUI countText;
-    public PowerUpBase powerUpBase { get; private set; }
-
-    public void IncreaseCount()
-    {
-        count++;
-        countText.text = count.ToString();  
-    }
+    [SerializeField] private Image backgroundImage;
+    [SerializeField] private Image itemImage;
+    private float duration = 0f;
     public void AddItem(PowerUpBase powerUp)
     {
-        powerUpBase = powerUp;
-        image.sprite = powerUp.powerUpIcon;
-    }
-    public void RemoveItem()
-    {
-        count--;
-        countText.text = count.ToString();
-        if (count == 0)
+        if (!gameObject.activeInHierarchy)
         {
-            count = 0;
-            Destroy(gameObject);
+            gameObject.SetActive(true);
         }
+
+        itemImage.sprite = powerUp.sprite;
+        duration = powerUp.duration;
+        powerUp.Activate();
+        StartCoroutine(FillAmountCoroutine());
     }
-    public void UseItem()
+    private void RemoveItem()
     {
-        powerUpBase.Activate();
+        gameObject.SetActive(false);
+    }
+    private IEnumerator FillAmountCoroutine()
+    {
+        float elapsedTime = 0f;
+
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float fillValue = Mathf.Lerp(1f, 0f, elapsedTime / duration);
+            backgroundImage.fillAmount = fillValue;
+            yield return null;
+        }
+
+        backgroundImage.fillAmount = 0f;
         RemoveItem();
+    }
+    public void ResetData()
+    {
+        itemImage.sprite = null;
+        backgroundImage.fillAmount = 1f;
+        gameObject.SetActive (false);
     }
 }

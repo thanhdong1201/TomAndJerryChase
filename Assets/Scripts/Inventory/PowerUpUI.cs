@@ -4,51 +4,37 @@ using System.Collections.Generic;
 
 public class PowerUpUI : MonoBehaviour
 {
-    public List<InventorySlot> inventorySlots;
-    public GameObject inventoryItemPrefab; 
-    public Transform inventoryPanel;
+    [SerializeField] private GameObject inventoryItemPrefab;
+    [SerializeField] private List<InventoryItem> inventoryItems;
 
+    private Dictionary<PowerUpBase, InventoryItem> powerUpDictionary;
+
+    private void Start()
+    {
+        powerUpDictionary = new Dictionary<PowerUpBase, InventoryItem>();
+        inventoryItems = new List<InventoryItem>();
+    }
     public void AddItem(PowerUpBase powerUp)
     {
-        // Kiểm tra xem item đã tồn tại trong inventory chưa
-        foreach (InventorySlot slot in inventorySlots)
+        if (!powerUpDictionary.ContainsKey(powerUp))
         {
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-
-            if (itemInSlot != null && itemInSlot.powerUpBase == powerUp)
-            {
-                itemInSlot.IncreaseCount();
-                return;
-            }
+            GameObject inventoryItemGameObject = Instantiate(inventoryItemPrefab, transform);
+            InventoryItem inventoryItem = inventoryItemGameObject.GetComponent<InventoryItem>();
+            inventoryItem.AddItem(powerUp);
+            powerUpDictionary.Add(powerUp, inventoryItem);
+            inventoryItems.Add(inventoryItem);
         }
-
-        // Nếu không có item nào cùng loại, tìm slot trống và tạo item mới
-        foreach (var slot in inventorySlots)
+        if (powerUpDictionary.ContainsKey(powerUp))
         {
-            if (slot.transform.childCount == 0) // Kiểm tra slot trống
-            {
-                InitializeItem(powerUp, slot.transform);
-                return;
-            }
+            powerUpDictionary.TryGetValue(powerUp, out InventoryItem inventoryItem);
+            inventoryItem.AddItem(powerUp);
         }
-    }
-    private void InitializeItem(PowerUpBase powerUp , Transform inventorySlotTransform)
-    {
-        GameObject go = Instantiate(inventoryItemPrefab, inventorySlotTransform);
-        InventoryItem item = go.GetComponent<InventoryItem>();
-        item.AddItem(powerUp);
-        item.IncreaseCount();
     }
     public void Restart()
     {
-        foreach (InventorySlot slot in inventorySlots)
+        foreach (InventoryItem inventoryItem in inventoryItems)
         {
-            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
-
-            if (itemInSlot != null)
-            {
-                Destroy(itemInSlot.gameObject);
-            }
+            inventoryItem.ResetData();
         }
     }
 }

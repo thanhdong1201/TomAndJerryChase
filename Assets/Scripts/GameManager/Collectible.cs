@@ -2,30 +2,24 @@
 
 public class Collectible : MonoBehaviour
 {
-    public Type type;
-    public PowerUpType powerUpType;
+    public ItemType itemType;
 
     [Header("Broadcasting from Events")]
-    [SerializeField] private GameObjectEventChannelSO coinEvent;
-    [SerializeField] private GameObjectEventChannelSO powerUpEvent;
+    [SerializeField] protected GameObjectEventChannelSO returnToPoolEvent;
 
     public void Collect()
     {
         gameObject.SetActive(false);
-        if (type == Type.Cheese)
-        {
-            
-            coinEvent?.RaiseEvent(gameObject);
-        }
-        else
-        {
-            powerUpEvent?.RaiseEvent(gameObject);
-        }
+        returnToPoolEvent?.RaiseEvent(gameObject);
     }
 }
 
-public enum Type
+public enum ItemType
 {
-    Cheese,
-    PowerUp
+    Coin,
+    Invisibility,
+    SpeedBoost,
+    GainLife,
+    Shield,
+    Magnet
 }
