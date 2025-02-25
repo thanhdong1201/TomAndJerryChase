@@ -22,7 +22,7 @@ public class PlayerController : MonoBehaviour
     private CharacterController characterController;
     private Rigidbody rb;
 
-    private bool isPaused = false;
+    private bool isPaused = true;
 
     private void Start()
     {
@@ -41,7 +41,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Update()
     {
-        if (!isPaused) return;
+        if (isPaused) return;
 
         playerMovement.CheckGround();
         playerMovement.UpdateVerticalVelocity();
@@ -70,8 +70,8 @@ public class PlayerController : MonoBehaviour
     }
     private void Idle()
     {
-        animator.SetBool("Run", false);
         isPaused = true;
+        animator.SetBool("Run", false);
     }
     private void StartGame()
     {
@@ -87,6 +87,7 @@ public class PlayerController : MonoBehaviour
             rb = null;
         }
 
+        isPaused = true;
         animator.SetTrigger("Restart");
         playerMovement.ResetPlayer();
         Idle();

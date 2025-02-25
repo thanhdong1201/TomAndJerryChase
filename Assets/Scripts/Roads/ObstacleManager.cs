@@ -1,7 +1,5 @@
 ﻿using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
-using static UnityEngine.Rendering.HableCurve;
 
 [System.Serializable]
 public class ObstacleData
@@ -83,7 +81,9 @@ public class ObstacleManager : MonoBehaviour
     {
         float totalChance = 0f;
         foreach (var data in allowedObstacles)
+        {
             totalChance += data.spawnChance;
+        }
 
         float randomPoint = Random.value * totalChance;
         float cumulative = 0f;
@@ -95,6 +95,6 @@ public class ObstacleManager : MonoBehaviour
                 return data;
         }
 
-        return null; // Không trả về mặc định để tránh lỗi.
+        return null;
     }
 }

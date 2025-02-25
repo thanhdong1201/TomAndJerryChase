@@ -10,6 +10,10 @@ public class ChaseState : EnemyStateMachine
     [SerializeField] private float defaultEscapeTimer = 10f;
     [SerializeField] private float followDistance = 6;
     [SerializeField] private float spawnDistance = 8;
+
+    [Header("Broadcasting from Events")]
+    [SerializeField] private BoolEventChannelSO enableChaseCameraEvent;
+
     private float escapeTimer;
 
     public override void Enter()
@@ -24,6 +28,7 @@ public class ChaseState : EnemyStateMachine
 
         escapeTimer = defaultEscapeTimer;
         audioCueSO.PlayMusic(chaseMusic);
+        enableChaseCameraEvent.RaiseEvent(true);
     }
 
     public override void Update()

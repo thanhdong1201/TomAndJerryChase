@@ -3,9 +3,13 @@ using UnityEngine;
 
 public class AudioManager : MonoBehaviour
 {
+    [SerializeField] private GameStateSO gameStateSO;
     [SerializeField] private AudioCueSO audioCueSO;
     [SerializeField] private AudioSource sfxSource;
     [SerializeField] private AudioSource musicSource;
+
+    [SerializeField] private AudioClip menuMusic;
+    [SerializeField] private AudioClip gameOverMusic;
 
     private float fadeOutDuration = 3.5f;
     private Coroutine fadeOutCoroutine;
@@ -15,9 +19,9 @@ public class AudioManager : MonoBehaviour
     {
         defaultMusicVolume = musicSource.volume;
     }
-
     private void OnEnable()
     {
+        gameStateSO.OnGameStateChanged += HandleGameStateChange;
         audioCueSO.OnPlaySFX += HandlePlaySFX;
         audioCueSO.OnPlayMusic += HandlePlayMusic;
         audioCueSO.OnFadeOutMusic += HandleFadeOutMusic;
@@ -25,11 +29,39 @@ public class AudioManager : MonoBehaviour
 
     private void OnDisable()
     {
+        gameStateSO.OnGameStateChanged -= HandleGameStateChange;
         audioCueSO.OnPlaySFX -= HandlePlaySFX;
         audioCueSO.OnPlayMusic -= HandlePlayMusic;
         audioCueSO.OnFadeOutMusic -= HandleFadeOutMusic;
     }
-
+    private void Start()
+    {
+        HandlePlayMusic(menuMusic);
+    }
+    private void HandleGameStateChange(GameState gameState)
+    {
+        switch (gameState)
+        {
+            case GameState.Pause:
+                sfxSource.Stop();
+                musicSource.Pause();   
+                break;
+            case GameState.Resume:
+                musicSource.UnPause();
+                break;
+            case GameState.Start:
+                musicSource.Stop();
+                break;
+            case GameState.Restart:
+                musicSource.Stop();
+                HandlePlayMusic(menuMusic);
+                break;
+            case GameState.GameOver:
+                HandleFadeOutMusic();
+                HandlePlaySFX(gameOverMusic);
+                break;
+        }
+    }
     private void HandlePlaySFX(AudioClip clip)
     {
         sfxSource.PlayOneShot(clip);

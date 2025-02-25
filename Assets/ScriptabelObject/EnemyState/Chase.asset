@@ -17,3 +17,4 @@ MonoBehaviour:
   defaultEscapeTimer: 10
   followDistance: 6
   spawnDistance: 8
+  enableChaseCameraEvent: {fileID: 11400000, guid: e1dc8bd604973544e8656c960a739ce6, type: 2}

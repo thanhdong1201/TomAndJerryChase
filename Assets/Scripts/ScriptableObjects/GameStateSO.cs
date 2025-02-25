@@ -1,6 +1,15 @@
 ﻿using System;
 using UnityEngine;
 
+public enum GameState
+{
+    None,
+    Start,
+    Restart,
+    GameOver,
+    Pause,
+    Resume
+}
 [CreateAssetMenu(menuName = "Data/GameState", fileName = "GameState")]
 public class GameStateSO : ScriptableObject
 {

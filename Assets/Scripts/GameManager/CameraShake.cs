@@ -43,12 +43,11 @@ public class CameraShake : MonoBehaviour
     }
     private IEnumerator ShakeRoutine(float intensity, float time)
     {
-        noise.m_AmplitudeGain = intensity;  // Cường độ rung
-        noise.m_FrequencyGain = 10f;  // Tần số rung cố định (có thể điều chỉnh)
+        noise.m_AmplitudeGain = intensity;  
+        noise.m_FrequencyGain = 10f; 
 
         yield return new WaitForSeconds(time);
 
-        // Giảm dần rung về 0 để tránh giật
         float elapsed = 0f;
         while (elapsed < 0.5f)
         {

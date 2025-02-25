@@ -7,6 +7,10 @@ public class AttackState : EnemyStateMachine
     [SerializeField] private float defaultEscapeTimer = 10f;
     [SerializeField] private float defaultCoolDownAttack = 2.5f;
     [SerializeField] private float attackDistance = 3.5f;
+
+    [Header("Broadcasting from Events")]
+    [SerializeField] private BoolEventChannelSO enableChaseCameraEvent;
+
     private float coolDownAttack;
     private float escapeTimer;
 
@@ -48,6 +52,7 @@ public class AttackState : EnemyStateMachine
         enemy.gameStateSO.OnPlayerStateChanged -= HandlePlayerStateChanged;
         enemy.gameStateSO.OnObstacleCollision -= HandleObstacleCollision;
         audioCueSO.FadeOutMusic();
+        enableChaseCameraEvent.RaiseEvent(false);
     }
     private void HandleObstacleCollision()
     {

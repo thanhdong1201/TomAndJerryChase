@@ -103,7 +103,7 @@ Material:
     - _ClearCoatMask: 0
     - _ClearCoatSmoothness: 0
     - _ColorMode: 0
-    - _Cull: 0
+    - _Cull: 2
     - _Cutoff: 0
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
@@ -153,11 +153,11 @@ Material:
     m_Colors:
     - _BaseColor: {r: 0.50588226, g: 0, b: 1, a: 0.4117647}
     - _BaseColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
-    - _Base_Color: {r: 1, g: 1, b: 1, a: 1}
+    - _Base_Color: {r: 1, g: 0.7628689, b: 0, a: 1}
     - _CameraFadeParams: {r: 0, g: Infinity, b: 0, a: 0}
     - _Color: {r: 0.50588226, g: 0, b: 1, a: 0.4117647}
     - _ColorAddSubDiff: {r: 1, g: 0, b: 0, a: 0}
-    - _EmissionColor: {r: 0.33610713, g: 0.68845975, b: 0.8584906, a: 1}
+    - _EmissionColor: {r: 0.6554363, g: 0.78431374, b: 0.23137252, a: 1}
     - _SoftParticleFadeParams: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.2, g: 0.2, b: 0.2, a: 1}
   m_BuildTextureStacks: []

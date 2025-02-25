@@ -7,7 +7,8 @@ public class PlayerCollider : MonoBehaviour
     [SerializeField] private PlayerDataSO playerDataSO;
 
     [Header("Effect")]
-    [SerializeField] private ParticleSystem collectEffect;
+    [SerializeField] private ParticleSystem collectCoinEffect;
+    [SerializeField] private ParticleSystem collectItemEffect;
     [SerializeField] private ParticleSystem hitEffect;
     [SerializeField] private ParticleSystem stunEffect;
 
@@ -67,15 +68,17 @@ public class PlayerCollider : MonoBehaviour
     }
     private void HandleCollectibleCollision(Collectible collectible)
     {
-        collectEffect.Play();
+
         collectible.Collect();
         if (collectible.itemType == ItemType.Coin)
         {
+            collectCoinEffect.Play();
             playerDataSO.AddCurrentCoin(1);
             audioCueSO.PlaySFX(collectClip);
         }
         else
         {
+            collectItemEffect.Play();
             playerInventory.AddPowerUp(collectible.itemType);
         }
 
