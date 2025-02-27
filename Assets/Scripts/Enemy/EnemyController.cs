@@ -61,9 +61,9 @@ public class EnemyController : MonoBehaviour
         currentState.Initialize(this);
         currentState?.Enter();
     }
-    public void MoveToTarget()
+    public void MoveToTarget(float targetSpeed)
     {
-        float speed = Mathf.Min(playerMovement.getSpeed * speedMultiplier, maxSpeed);
+        float speed = Mathf.Min(targetSpeed * speedMultiplier, maxSpeed);
         Vector3 targetPosition = new Vector3(player.position.x, 0f, player.position.z - followDistance);
         transform.position = Vector3.MoveTowards(transform.position, targetPosition, speed * Time.deltaTime);
     }

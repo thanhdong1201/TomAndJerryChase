@@ -39,7 +39,7 @@ public class GlobalVolumeController : MonoBehaviour
 
         if (value)
         {
-            motionBlur.intensity.value = 0.5f;
+            motionBlur.intensity.value = 0.1f;
         }
         else
         {

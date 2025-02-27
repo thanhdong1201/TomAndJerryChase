@@ -30,4 +30,15 @@ public class PlayerInventory : MonoBehaviour
             }
         }
     }
+    public void RemovePowerUp(ItemType type)
+    {
+        foreach (PowerUpBase powerUpBase in powerUpInventory)
+        {
+            if (powerUpBase.type == type)
+            {
+                powerUpBase.DisableEffect();
+                return;
+            }
+        }
+    }
 }

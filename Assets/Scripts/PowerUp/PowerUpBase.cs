@@ -40,6 +40,10 @@ public abstract class PowerUpBase : MonoBehaviour
         yield return new WaitForSeconds(duration);
         RemoveEffect();
     }
+    public virtual void DisableEffect()
+    {
+        RemoveEffect();
+    }
     private void UpdatePlayerState()
     {
         switch (type)

@@ -61,7 +61,16 @@ public class UIManager : MonoBehaviour
     private void HandleUpdateHUD()
     {
         coinText.SetText(playerData.currentCoin.ToString());
-        distanceText.SetText(playerData.currentDistance.ToString("F1") + "m");
+
+        if(playerData.currentDistance >= 0f)
+        {
+            distanceText.SetText(playerData.currentDistance.ToString("F1") + "m");
+        }
+        else
+        {
+            distanceText.SetText("");
+        }
+     
     }
     private void HandleWarning(string text)
     {

@@ -33,7 +33,7 @@ public class ChaseState : EnemyStateMachine
 
     public override void Update()
     {
-        enemy.MoveToTarget();
+        enemy.MoveToTarget(enemy.playerMovement.getSpeed);
         enemy.animator.SetBool("Chase", true);
         escapeTimer -= Time.deltaTime;
         if (escapeTimer <= 0)

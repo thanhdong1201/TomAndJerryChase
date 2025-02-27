@@ -37,7 +37,10 @@ public class PlayerDataSO : ScriptableObject
             OnDataChanged?.Invoke();
         }
     }
-
+    private void OnEnable()
+    {
+        Restart();
+    }
     public void Restart()
     {
         currentCoin = 0;

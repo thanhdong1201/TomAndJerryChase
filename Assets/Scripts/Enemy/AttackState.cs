@@ -27,7 +27,7 @@ public class AttackState : EnemyStateMachine
 
     public override void Update()
     {
-        enemy.MoveToTarget();
+        enemy.MoveToTarget(enemy.playerMovement.getSpeed);
 
 
         coolDownAttack -= Time.deltaTime;

@@ -2,6 +2,7 @@
 
 public class ShieldPowerUp : PowerUpBase
 {
+    [SerializeField] protected ParticleSystem destroyParticle;
     public override ItemType type => ItemType.Shield;
     protected override void ApplyEffect()
     {
@@ -11,5 +12,10 @@ public class ShieldPowerUp : PowerUpBase
     protected override void RemoveEffect()
     {
         base.RemoveEffect();
+    }
+    public override void DisableEffect()
+    {
+        base.DisableEffect();   
+        destroyParticle.Play();
     }
 }

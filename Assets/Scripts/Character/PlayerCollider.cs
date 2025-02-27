@@ -68,7 +68,6 @@ public class PlayerCollider : MonoBehaviour
     }
     private void HandleCollectibleCollision(Collectible collectible)
     {
-
         collectible.Collect();
         if (collectible.itemType == ItemType.Coin)
         {
@@ -87,6 +86,7 @@ public class PlayerCollider : MonoBehaviour
     {
         if (gameStateSO.CurrentPlayerState == PlayerState.Shielded)
         {
+            playerInventory.RemovePowerUp(ItemType.Shield);
             return;
         }
         else
@@ -98,9 +98,10 @@ public class PlayerCollider : MonoBehaviour
         }
     }
     private void HandleStumbleObstacleCollision()
-    {      
-        if (gameStateSO.CurrentPlayerState == PlayerState.Shielded || gameStateSO.CurrentPlayerState == PlayerState.Invisible || gameStateSO.CurrentPlayerState == PlayerState.SpeedBoost)
+    {
+        if (gameStateSO.CurrentPlayerState == PlayerState.Shielded)
         {
+            playerInventory.RemovePowerUp(ItemType.Shield);
             return;
         }
         else
@@ -120,7 +121,9 @@ public class PlayerCollider : MonoBehaviour
 
         if (gameStateSO.CurrentPlayerState == PlayerState.Shielded)
         {
+            playerInventory.RemovePowerUp(ItemType.Shield);
             cameraShakeSoftEvent.RaiseEvent();
+            return;
         }
         else
         {

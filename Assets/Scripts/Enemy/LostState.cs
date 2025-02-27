@@ -14,21 +14,18 @@ public class LostState : EnemyStateMachine
         enemy.gameStateSO.OnPlayerStateChanged += HandlePlayerStateChanged;
         enemy.gameStateSO.OnObstacleCollision += HandleObstacleCollision;
 
-        initialSpeed = enemy.currentSpeed;
+        enemy.followDistance = 10f;
+        initialSpeed = enemy.playerMovement.getSpeed;
         elapsedTime = 0f;
     }
     public override void Update() 
     {
-        enemy.MoveToTarget();
+
 
         if (elapsedTime < slowDownDuration)
         {
             elapsedTime += Time.deltaTime;
-            enemy.currentSpeed = Mathf.Lerp(initialSpeed, 0f, elapsedTime / slowDownDuration);
-        }
-        else
-        {
-            enemy.SetState(enemy.lostState);
+            enemy.MoveToTarget(Mathf.Lerp(initialSpeed, 0f, elapsedTime / slowDownDuration));
         }
     }
     public override void Exit()
@@ -43,6 +40,5 @@ public class LostState : EnemyStateMachine
     private void HandlePlayerStateChanged(PlayerState state)
     {
         if (state == PlayerState.Dead) enemy.SetState(enemy.idleState);
-        if (state == PlayerState.Invisible || state == PlayerState.SpeedBoost) enemy.SetState(enemy.lostState);
     }
 }

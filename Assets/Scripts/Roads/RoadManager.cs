@@ -80,7 +80,7 @@ public class RoadManager : MonoBehaviour
     {
         if (roadPool.Count == 0) return;
 
-        GameObject road = roadPool.Dequeue(); // Lấy ngẫu nhiên từ pool
+        GameObject road = roadPool.Dequeue(); 
         road.transform.position = Vector3.forward * spawnZ;
         road.SetActive(true);
         activeRoads.Add(road);
